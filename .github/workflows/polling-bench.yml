@@ -1,0 +1,19 @@
+name: polling-bench
+on:
+  push:
+    branches: [bench/polling]
+jobs:
+  bench:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          coverage: none
+      - run: composer install --no-interaction --no-progress --ignore-platform-req=php
+      - run: php bench.php
